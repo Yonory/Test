@@ -1,25 +1,25 @@
 name: Docker CI
 
 on:
- push:
-   branches: ["main"]
- pull_request:
-   branches: ["main"]
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
 
 jobs:
   build:
-     runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
 
-     steps:
-     - name: Checkout repo
-       uses: actions/checkout@v3
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
 
-     - name: Build Docker image
-       run: docker build -t myapp:latets .
+    - name: Build Docker image
+      run: docker build -t myapp:latest .
 
-     - name: Run container test
-       run:
-         docker run -d -p 5000:5000 --name test_container myapp:latest
-         sleep 5
-         curl -f http://localhost:5000
-         docker stop test_container
+    - name: Run container test
+      run: |
+        docker run -d -p 5000:5000 --name test_container myapp:latest
+        sleep 5
+        curl -f http://localhost:5000
+        docker stop test_container
