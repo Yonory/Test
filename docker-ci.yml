@@ -1,53 +1,24 @@
+  name: Docker CI
+
+on:
+push:
+branches: [ "main" ]
+pull_request:
+branches: [ "main" ]
+
 jobs:
+build:
+runs-on: ubuntu-latest
 
-  build:
+steps:
+- name: Checkout repo
+uses: actions/checkout@v3
 
-    runs-on: ubuntu-latest
-
-    steps:
-
-      - name: Checkout repo
-
-        uses: actions/checkout@v3
-
-
-
-      - name: Set up Docker Buildx
-
-        uses: docker/setup-buildx-action@v2
-
-
-
-      - name: Build and run container
-
-        run: |
-
-          # Make container 
-
-          docker build -t myapp:latest .
-
-
-
-          # Run comtainer
-
-          docker run -d -p 5000:5000 --name test_container myapp:latest
-
-
-
-          # Waiting servers outtput
-
-          sleep 5
-
-
-
-          # Check
-
-          curl -f http://localhost:5000
-
-
-
-          # Stop container
-
-          docker stop test_container
-
+- name: Build and run container
+run: |
+docker build -t myapp:latest .
+docker run -d -p 5000:5000 --name test_container myapp:latest
+sleep 5
+curl -f http://localhost:5000
+docker stop test_container
 
